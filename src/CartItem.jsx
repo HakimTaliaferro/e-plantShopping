@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from './CartSlice';
+import { removeItem, updateQuantity, addItem } from './CartSlice';
 import './CartItem.css';
 
 const CartItem = ({ onContinueShopping }) => {
@@ -20,20 +20,26 @@ const CartItem = ({ onContinueShopping }) => {
 
   // ✅ Handle incrementing quantity
   const handleIncrement = (item) => {
+    // Dispatch the updateQuantity action to increment the quantity of the item
     dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
+    // Optionally, dispatch the addItem action if the item is added to cart from an external source
+    dispatch(addItem(item));
   };
 
   // ✅ Handle decrementing quantity (min 1)
   const handleDecrement = (item) => {
     if (item.quantity > 1) {
+      // Dispatch the updateQuantity action to decrement the quantity of the item
       dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
     } else {
+      // Dispatch the removeItem action to remove the item from the cart
       dispatch(removeItem(item.name));
     }
   };
 
   // ✅ Handle removing item
   const handleRemove = (item) => {
+    // Dispatch the removeItem action to remove the item from the cart
     dispatch(removeItem(item.name));
   };
 
